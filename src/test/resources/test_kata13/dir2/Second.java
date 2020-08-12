@@ -16,19 +16,6 @@ public class Second {
         final Path path = Paths.get(readInput());
         processPath(path);
     }
-
-    private void processPath(final Path path) throws IOException {
-        if (Files.isDirectory(path)) {
-            final List<Path> dirItems = Files.list(path).collect(Collectors.toList());
-            for (Path item : dirItems) {
-                processPath(Paths.get(path.toString(), item.toString()));
-            }
-        } else {
-            final List<String> lines = Files.lines(path).collect(Collectors.toList());
-            final int linesCount = countCodeLines(lines);
-            System.out.println(path.getFileName() + " : " + linesCount);
-        }
-    }
    
     /* private String readInput() {
         System.out.print("Enter file\\dir path: ");
@@ -41,28 +28,7 @@ public class Second {
         return input;
     } */
 
-    private int countCodeLines(final List<String> lines) {
-        int commentedCounter = 0;
-        int commentedBlockCounter = 0;
-        for (final String line : lines) {
-            final String trimmed = line.trim();
-            if (trimmed.endsWith("*/")) {
-                commentedCounter += commentedBlockCounter + 1;
-                commentedBlockCounter = 0;
-                continue;
-            }
-            if (commentedBlockCounter > 0) {
-                commentedBlockCounter++;
-                continue;
-            }
-            if (trimmed.startsWith("/*")) {
-                commentedBlockCounter++;
-                continue;
-            }
-            if (line.isEmpty() || trimmed.startsWith("//")) {
-                commentedCounter++;
-            }
-        }
-        return lines.size() - commentedCounter;
+    private int count(final List<String> lines) {
+        int commented = 0;
     }
 }

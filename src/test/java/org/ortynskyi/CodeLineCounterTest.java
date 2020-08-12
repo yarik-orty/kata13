@@ -11,7 +11,7 @@ import java.nio.file.Paths;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class MainTest {
+public class CodeLineCounterTest {
 
     private static final String FILE_1 = "test_kata13/dir1/First.java";
     private static final String FILE_2 = "test_kata13/dir2/sub_dir1/Regular.java";
@@ -19,11 +19,12 @@ public class MainTest {
     private static final String FILE_4 = "test_kata13/dir3/Four.java";
     private static final String FILE_5 = "test_kata13/dir3/Five.java";
 
+    private final CodeLineCounter counter = new CodeLineCounter();
+
     @Test
     public void regularCommentTest() throws IOException, URISyntaxException {
-        Main main = new Main();
         URL url = getClass().getClassLoader().getResource(FILE_2);
-        int actualCount = main.countCodeLines(Files.lines(Paths.get(
+        int actualCount = counter.count(Files.lines(Paths.get(
                 Objects.requireNonNull(url).toURI())).collect(Collectors.toList()));
         int expectedCount = 26;
 
@@ -32,9 +33,8 @@ public class MainTest {
 
     @Test
     public void commentBlockTest() throws IOException, URISyntaxException {
-        Main main = new Main();
         URL url = getClass().getClassLoader().getResource(FILE_4);
-        int actualCount = main.countCodeLines(Files.lines(Paths.get(
+        int actualCount = counter.count(Files.lines(Paths.get(
                 Objects.requireNonNull(url).toURI())).collect(Collectors.toList()));
         int expectedCount = 3;
 
@@ -43,9 +43,8 @@ public class MainTest {
 
     @Test
     public void javaDocBlockTest() throws IOException, URISyntaxException {
-        Main main = new Main();
         URL url = getClass().getClassLoader().getResource(FILE_3);
-        int actualCount = main.countCodeLines(Files.lines(Paths.get(
+        int actualCount = counter.count(Files.lines(Paths.get(
                 Objects.requireNonNull(url).toURI())).collect(Collectors.toList()));
         int expectedCount = 12;
 
@@ -54,9 +53,8 @@ public class MainTest {
 
     @Test
     public void mixedCommentTest() throws IOException, URISyntaxException {
-        Main main = new Main();
         URL url = getClass().getClassLoader().getResource(FILE_1);
-        int actualCount = main.countCodeLines(Files.lines(Paths.get(
+        int actualCount = counter.count(Files.lines(Paths.get(
                 Objects.requireNonNull(url).toURI())).collect(Collectors.toList()));
         int expectedCount = 9;
 
@@ -65,9 +63,8 @@ public class MainTest {
 
     @Test
     public void pathologicalCommentTest() throws IOException, URISyntaxException {
-        Main main = new Main();
         URL url = getClass().getClassLoader().getResource(FILE_5);
-        int actualCount = main.countCodeLines(Files.lines(Paths.get(
+        int actualCount = counter.count(Files.lines(Paths.get(
                 Objects.requireNonNull(url).toURI())).collect(Collectors.toList()));
         int expectedCount = 5;
 
