@@ -1,6 +1,7 @@
 package org.ortynskyi;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ public class PathProcessor {
             item.setLineCount(dirLineCount);
             generalCount = dirLineCount;
         } else {
-            final List<String> lines = Files.lines(path).collect(Collectors.toList());
+            final List<String> lines = Files.lines(path, StandardCharsets.ISO_8859_1).collect(Collectors.toList());
             final int linesCount = counter.count(lines);
             output.add(new Item(path.getFileName().toString(), deepness, linesCount));
             generalCount = linesCount;
