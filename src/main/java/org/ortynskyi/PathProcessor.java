@@ -1,7 +1,6 @@
 package org.ortynskyi;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -9,6 +8,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class PathProcessor {
+
+    private static final String JAVA_FILE_EXTENSION = ".java";
 
     private final List<Item> output = new ArrayList<>();
     private final CodeLineCounter counter;
@@ -23,7 +24,7 @@ public class PathProcessor {
     }
 
     private int processPath(final Path path, final int deepness) throws IOException {
-        final int generalCount;
+        int generalCount = 0;
         if (Files.isDirectory(path)) {
             final List<Path> dirItems = Files.list(path).collect(Collectors.toList());
             final Item item = new Item(path.getFileName().toString(), deepness);
@@ -34,8 +35,8 @@ public class PathProcessor {
             }
             item.setLineCount(dirLineCount);
             generalCount = dirLineCount;
-        } else {
-            final List<String> lines = Files.lines(path, StandardCharsets.ISO_8859_1).collect(Collectors.toList());
+        } else if (path.toString().endsWith(JAVA_FILE_EXTENSION)) {
+            final List<String> lines = Files.lines(path).collect(Collectors.toList());
             final int linesCount = counter.count(lines);
             output.add(new Item(path.getFileName().toString(), deepness, linesCount));
             generalCount = linesCount;
